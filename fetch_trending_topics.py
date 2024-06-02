@@ -22,19 +22,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # MongoDB setup
-mongodb_url = os.getenv("MONGODB_URL")
+mongodb_url = os.getenv("MONGODB_URI")
 client = pymongo.MongoClient(mongodb_url)
 db = client["twitter_trends"]
 collection = db["trends"]
 
-def getTrendingTopics():
+def getTrendingTopics(inputs):
     try:
         options = Options()
         options.add_argument("--disable-blink-features=AutomationControlled") 
         driver = webdriver.Chrome(options=options)
         wait = WebDriverWait(driver, 20)
-        USERNAME = os.getenv("TWITTER_USERNAME")
-        PASSWORD = os.getenv("TWITTER_PASSWORD")
+        USERNAME = inputs.get("username") if 'username' in inputs else os.getenv("TWITTER_USERNAME") 
+        PASSWORD = inputs.get("password") if 'password' in inputs else os.getenv("TWITTER_PASSWORD")
+        if not USERNAME or not PASSWORD:
+            raise Exception("Twitter username or password not found.")
         # Twitter login URL
         url = "https://twitter.com/i/flow/login"
         driver.get(url)
@@ -53,7 +55,8 @@ def getTrendingTopics():
         
         # Fetch trending topics
         trends = WebDriverWait(driver, 30).until(EC.presence_of_all_elements_located((By.XPATH, '//*[@class="css-175oi2r r-16y2uox r-bnwqim"]')))
-
+        if not trends:
+            raise TimeoutException
         top_trends = [trend.text for trend in trends[:5]]
         
         # Get current IP
@@ -62,7 +65,6 @@ def getTrendingTopics():
         
         # Store the data in MongoDB
         unique_id = str(uuid.uuid4())
-        print(f"Unique ID: {unique_id}")
         end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         data = {
             "_id": unique_id,
@@ -75,24 +77,17 @@ def getTrendingTopics():
             "ip_address": ip_address
         }
         collection.insert_one(data)
-        
-        driver.quit()
-        
         return data
     
     except TimeoutException:
-        print("Timeout: Element not found. Check locator strategy or page load delays.")
-        driver.quit()
-        sys.exit(1)  # Exit script with error code 1
+        return {"error": "Timeout: Element not found. Check locator strategy or page load delays."}
+        
     
     except NoSuchWindowException:
-        print("NoSuchWindowException: Browser window closed unexpectedly.")
-        driver.quit()
-        sys.exit(1)  # Exit script with error code 1
+        return {"error": "NoSuchWindowException: Browser window closed unexpectedly."}
+         
     
     except Exception as e:
-        print(f"An error occurred: {e}")
-        driver.quit()
-        sys.exit(1)  # Exit script with error code 1
+        return {"error": f"An error occurred: {e}"}
     finally:
         driver.quit()

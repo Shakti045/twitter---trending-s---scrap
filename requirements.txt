@@ -4,4 +4,4 @@ flask
 chromedriver-autoinstaller
 requests
 python-dotenv
-uuid
+flask-cors
