@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.custom-loader {
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  border:8px solid;
+  border-color:#766DF4 #0000;
+  animation:s1 1s infinite;
+}
+@keyframes s1 {to{transform: rotate(.5turn)}}
+
+
+.wrapper{
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.inputwrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.optioninput{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+.valueinput{
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+}
+.ipbox{
+  width: 300px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  padding: 5px;
+}
+.btn{
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #000;
+  background-color: #766DF4;
+  color: #fff;
+  cursor: pointer;
+}

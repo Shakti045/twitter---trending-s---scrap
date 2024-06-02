@@ -38,7 +38,7 @@ def getTrendingTopics(inputs):
         if not USERNAME or not PASSWORD:
             raise Exception("Twitter username or password not found.")
         # Twitter login URL
-        url = "https://twitter.com/i/flow/login"
+        url = "https://x.com/i/flow/login"
         driver.get(url)
         
         # Log in to Twitter
