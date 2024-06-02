@@ -5,3 +5,4 @@ chromedriver-autoinstaller
 requests
 python-dotenv
 flask-cors
+gunicorn
