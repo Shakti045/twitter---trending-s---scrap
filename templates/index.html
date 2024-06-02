@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Trends</title>
+</head>
+<body>
+    <h1>Twitter Trends</h1>
+    <button id="run-script">Fetch Trending Topics</button>
+    <div id="results"></div>
+
+    <script>
+        document.getElementById('run-script').onclick = function() {
+            fetch('/run-script', {
+                method: 'POST'
+            })
+            .then(response => response.json())
+            .then(data => {
+                let resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = `<p>These are the most happening topics as on ${data.end_time}</p>
+                                        <p>Trend 1: ${data.trend1}</p>
+                                        <p>Trend 2: ${data.trend2}</p>
+                                        <p>Trend 3: ${data.trend3}</p>
+                                        <p>Trend 4: ${data.trend4}</p>
+                                        <p>Trend 5: ${data.trend5}</p>
+                                        <p>End Time: ${data.end_time}</p>
+                                        <p>IP Address: ${data.ip_address}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
