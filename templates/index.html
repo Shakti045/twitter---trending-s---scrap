@@ -10,8 +10,8 @@
 
     <script>
         document.getElementById('run-script').onclick = function() {
-            fetch('/run-script', {
-                method: 'POST'
+            fetch('/api/get_trending_topics', {
+                method: 'GET'
             })
             .then(response => response.json())
             .then(data => {
