@@ -29,11 +29,9 @@ db = client["twitter_trends"]
 collection = db["trends"]
 
 def getTrendingTopics(inputs):
-    driver = None 
     try:
         options = Options()  
         options.add_argument("--disable-blink-features=AutomationControlled") 
-        options.binary_location = "/usr/bin/google-chrome-stable" 
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
         wait = WebDriverWait(driver, 20)
     
@@ -81,6 +79,7 @@ def getTrendingTopics(inputs):
             "ip_address": ip_address
         }
         collection.insert_one(data)
+        driver.quit()
         return data
     
     except TimeoutException:
@@ -95,6 +94,4 @@ def getTrendingTopics(inputs):
         return {"error": f"An error occurred: {e}"}
     except:
         return {"error": "An unknown error occurred."}
-    finally:
-        if driver:
-            driver.quit()
+            
