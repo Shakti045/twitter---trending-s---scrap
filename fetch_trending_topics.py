@@ -32,6 +32,7 @@ def getTrendingTopics(inputs):
     try:
         options = Options()  
         options.add_argument("--disable-blink-features=AutomationControlled") 
+        options.binary_location = "/usr/bin/google-chrome-stable"
         driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
         wait = WebDriverWait(driver, 20)
     
