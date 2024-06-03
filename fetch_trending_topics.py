@@ -14,6 +14,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchWindowException
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 import pymongo
 from dotenv import load_dotenv
@@ -29,9 +31,9 @@ collection = db["trends"]
 
 def getTrendingTopics(inputs):
     try:
-        options = Options()
+        options = Options()  
         options.add_argument("--disable-blink-features=AutomationControlled") 
-        driver = webdriver.Chrome(options=options)
+        driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
         wait = WebDriverWait(driver, 20)
         USERNAME = inputs.get("username") if 'username' in inputs else os.getenv("TWITTER_USERNAME") 
         PASSWORD = inputs.get("password") if 'password' in inputs else os.getenv("TWITTER_PASSWORD")
